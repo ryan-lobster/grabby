@@ -18,3 +18,28 @@ export function readBoolParam(params: URLSearchParams, key: string, fallback: bo
   if (value === null) return fallback
   return value === '1' || value === 'true'
 }
+
+export function readNumberParam(
+  params: URLSearchParams,
+  key: string,
+  fallback: number,
+  min: number,
+  max: number,
+): number {
+  const raw = params.get(key)
+  if (raw === null || raw.trim() === '') return fallback
+  const value = Number(raw)
+  return Number.isFinite(value) ? Math.min(Math.max(value, min), max) : fallback
+}
+
+/** Comma-separated list of sites, e.g. `urls=lobster.digital,wikipedia.org`. */
+export function readUrlListParam(params: URLSearchParams, key: string, fallback: string[]): string[] {
+  const raw = params.get(key)
+  if (!raw) return fallback
+  const urls = raw
+    .split(',')
+    .map((entry) => entry.trim())
+    .filter(Boolean)
+    .map(normalizeUrl)
+  return urls.length > 0 ? urls : fallback
+}

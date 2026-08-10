@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { useFrame, type ThreeEvent } from '@react-three/fiber'
 
 import { ScreenSurface } from '../../components/ScreenSurface'
-import { panelGeometry, slabGeometry } from './geometry'
+import { panelGeometry, slabGeometry } from '../geometry'
 import type { IPhoneSettings } from '../types'
 
 // Virtual viewport the embedded page is laid out at — a real iPhone 15 Pro in CSS px.

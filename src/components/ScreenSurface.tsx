@@ -11,9 +11,10 @@ interface ScreenSurfaceProps {
   /**
    * Meshes to occlude against. Occluding against the whole scene doesn't work here:
    * the overlay sits exactly where the display mesh is, so a scene-wide raycast hits
-   * that mesh itself and the overlay never resolves.
+   * that mesh itself and the overlay never resolves. Leave it off for a screen that
+   * nothing can pass in front of — the check is a raycast per screen per frame.
    */
-  occlude: RefObject<THREE.Object3D | null>[]
+  occlude?: RefObject<THREE.Object3D | null>[]
   interactive: boolean
   /** Screen corner rounding, in the same CSS px as pxWidth/pxHeight. */
   radiusPx?: number

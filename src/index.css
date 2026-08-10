@@ -314,7 +314,9 @@ body,
 /* ------------------------------------------------------------- fields */
 
 .field + .field,
-.field + .toggle-row {
+.field + .toggle-row,
+.toggle-row + .field,
+.toggle-row + .toggle-row {
   margin-top: 20px;
 }
 
@@ -347,6 +349,19 @@ body,
 .modal input[type='text']:focus {
   outline: none;
   border-color: var(--accent);
+}
+
+.modal input[type='range'] {
+  flex: 1;
+  min-width: 0;
+  accent-color: var(--accent);
+}
+
+.slider-value {
+  flex: 0 0 auto;
+  min-width: 46px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 .modal input[type='color'] {
@@ -415,6 +430,57 @@ body,
 
 .swatch.is-active {
   box-shadow: 0 0 0 2px var(--panel-solid), 0 0 0 4px var(--accent);
+}
+
+/* ----------------------------------------------------------- repeater */
+
+.repeat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.repeat-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.repeat-index {
+  flex: 0 0 auto;
+  width: 12px;
+  font-size: 11px;
+  color: var(--panel-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.icon-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.icon-btn:disabled:hover {
+  background: none;
+  color: var(--panel-muted);
+}
+
+.add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 7px 11px;
+  border-radius: 8px;
+  border: 1px dashed var(--panel-input-border);
+  background: none;
+  color: var(--panel-muted);
+  font-size: 12.5px;
+  cursor: pointer;
+}
+
+.add-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .segmented {
@@ -525,6 +591,14 @@ body,
   }
   50% {
     opacity: 0.25;
+  }
+}
+
+/* Pans an embedded page up behind its screen — see PAGE_SCROLL_PX_H, which sizes
+   the iframe taller than the screen so there is something to pan to. */
+@keyframes page-scroll {
+  to {
+    transform: translateY(var(--page-travel, 0));
   }
 }
 

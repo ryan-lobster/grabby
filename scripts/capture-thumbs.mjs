@@ -21,6 +21,8 @@ const VIEWPORT = { width: 640, height: 480 }
 const SHOTS = [
   { id: 'macbook', query: 'scene=macbook&open=1' },
   { id: 'iphone', query: 'scene=iphone&on=1' },
+  // Still frame: the wall would otherwise be mid-travel and half-blurred by motion.
+  { id: 'mobile-grid', query: 'scene=mobile-grid&speed=0' },
 ]
 
 const server = spawn('npx', ['vite', '--port', String(PORT), '--strictPort'], {

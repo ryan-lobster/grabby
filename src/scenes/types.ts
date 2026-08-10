@@ -1,17 +1,18 @@
 import type { ComponentType } from 'react'
 
-/** Settings that every scene has, so generic UI (background, URL) can be shared. */
+/** Settings that every scene has, so generic UI (the backdrop picker) can be shared. */
 export interface BaseSceneSettings {
-  url: string
   bgColor: string
 }
 
 export interface MacbookSettings extends BaseSceneSettings {
+  url: string
   /** Lid angle target — the laptop floats and tilts while open. */
   open: boolean
 }
 
 export interface IPhoneSettings extends BaseSceneSettings {
+  url: string
   /** Display on/off. Off shows the dark glass, which is nice for showing off the body. */
   screenOn: boolean
   /** Hex of the titanium frame / glass back. */
@@ -19,11 +20,30 @@ export interface IPhoneSettings extends BaseSceneSettings {
   orientation: 'portrait' | 'landscape'
 }
 
-export type SceneSettings = MacbookSettings | IPhoneSettings
+export interface MobileGridSettings extends BaseSceneSettings {
+  /** One entry per site; tiles cycle through the list. Always at least one. */
+  urls: string[]
+  columns: number
+  /** Tiles in each column before the strip wraps around. */
+  rows: number
+  /** Space between phones, as a fraction of one phone's width. */
+  gap: number
+  /** Rotation of the whole wall, in degrees. */
+  rotation: number
+  /** Idle travel, in screen-heights per second. 0 leaves the wall still until scrolled. */
+  speed: number
+  /** Draw a phone body behind every screen. */
+  frame: boolean
+  /** Pan every embedded page down its own length and back, all at one speed. */
+  pageScroll: boolean
+}
+
+export type SceneSettings = MacbookSettings | IPhoneSettings | MobileGridSettings
 
 export interface SceneSettingsMap {
   macbook: MacbookSettings
   iphone: IPhoneSettings
+  'mobile-grid': MobileGridSettings
 }
 
 export type SceneId = keyof SceneSettingsMap

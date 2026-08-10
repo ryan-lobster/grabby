@@ -52,6 +52,25 @@ export function PhoneIcon() {
   )
 }
 
+export function SlidersIcon() {
+  return (
+    <svg {...base}>
+      <path d="M4 7h10M18 7h2M4 12h3M11 12h9M4 17h8M16 17h4" />
+      <circle cx="16" cy="7" r="2" />
+      <circle cx="9" cy="12" r="2" />
+      <circle cx="14" cy="17" r="2" />
+    </svg>
+  )
+}
+
+export function PlusIcon() {
+  return (
+    <svg {...base} width={14} height={14} strokeWidth={2}>
+      <path d="M12 5v14M5 12h14" />
+    </svg>
+  )
+}
+
 export function RecordIcon() {
   return (
     <svg {...base}>

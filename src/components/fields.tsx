@@ -1,5 +1,6 @@
-import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
+import { useEffect, useState, type FormEvent, type KeyboardEvent, type ReactNode } from 'react'
 import { normalizeUrl } from '../scenes/params'
+import { CloseIcon, PlusIcon } from './icons'
 
 interface FieldProps {
   label: string
@@ -47,6 +48,111 @@ export function UrlField({ value, onChange, label = 'Page URL', hint }: UrlField
           Load
         </button>
       </form>
+    </Field>
+  )
+}
+
+interface UrlListFieldProps {
+  values: string[]
+  onChange: (urls: string[]) => void
+  label?: string
+  hint?: ReactNode
+  addLabel?: string
+}
+
+/**
+ * A repeater of page URLs. Edits commit on blur or Enter rather than on every
+ * keystroke — each entry is a live iframe, and committing per character would
+ * reload it on the way to a valid address.
+ */
+export function UrlListField({ values, onChange, label = 'Sites', hint, addLabel = 'Add site' }: UrlListFieldProps) {
+  const [drafts, setDrafts] = useState(values)
+  useEffect(() => setDrafts(values), [values])
+
+  const commit = (index: number) => {
+    const draft = (drafts[index] ?? '').trim()
+    // An emptied field is a slip, not a request to load about:blank — put it back.
+    if (!draft) {
+      setDrafts(values)
+      return
+    }
+    const next = values.map((url, i) => (i === index ? normalizeUrl(draft) : url))
+    setDrafts(next)
+    if (next[index] !== values[index]) onChange(next)
+  }
+
+  const onKeyDown = (event: KeyboardEvent<HTMLInputElement>, index: number) => {
+    if (event.key === 'Enter') {
+      event.preventDefault()
+      commit(index)
+    } else if (event.key === 'Escape') {
+      setDrafts(values)
+    }
+  }
+
+  return (
+    <Field label={label} hint={hint}>
+      <div className="repeat-list">
+        {drafts.map((draft, index) => (
+          // Index keys: entries are positional, and the same URL can appear twice.
+          <div className="repeat-row" key={index}>
+            <span className="repeat-index">{index + 1}</span>
+            <input
+              type="text"
+              value={draft}
+              placeholder="https://example.com"
+              aria-label={`Site ${index + 1}`}
+              onChange={(event) => setDrafts(drafts.map((url, i) => (i === index ? event.target.value : url)))}
+              onBlur={() => commit(index)}
+              onKeyDown={(event) => onKeyDown(event, index)}
+            />
+            <button
+              type="button"
+              className="icon-btn"
+              aria-label={`Remove site ${index + 1}`}
+              disabled={values.length < 2}
+              onClick={() => onChange(values.filter((_, i) => i !== index))}
+            >
+              <CloseIcon />
+            </button>
+          </div>
+        ))}
+      </div>
+      <button type="button" className="add-btn" onClick={() => onChange([...values, values[values.length - 1]])}>
+        <PlusIcon />
+        {addLabel}
+      </button>
+    </Field>
+  )
+}
+
+interface SliderFieldProps {
+  label: string
+  value: number
+  min: number
+  max: number
+  step: number
+  onChange: (value: number) => void
+  /** Renders the read-out beside the track; defaults to the raw number. */
+  format?: (value: number) => string
+  hint?: ReactNode
+}
+
+export function SliderField({ label, value, min, max, step, onChange, format, hint }: SliderFieldProps) {
+  return (
+    <Field label={label} hint={hint}>
+      <div className="row">
+        <input
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          aria-label={label}
+          onChange={(event) => onChange(Number(event.target.value))}
+        />
+        <code className="mono slider-value">{format ? format(value) : value}</code>
+      </div>
     </Field>
   )
 }
