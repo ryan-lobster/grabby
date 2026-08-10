@@ -29,18 +29,30 @@ speed of 0 leaves a wall that only moves when you do. The screens are deliberate
 not clickable there: the embedded pages would otherwise swallow the wheel. Every
 tile is a live iframe, so a 6 × 6 wall is 36 pages loading at once.
 
-**Mobile sphere** spreads bare screens — no phone body — evenly over a sphere, each
-one tangent to it and facing out, so the near ones are large and the far ones small.
-Drag to turn it and let go to throw it; the wheel zooms. **Screens** sizes the
-screens too, since they're scaled to the spacing that count works out at, and
-**Spin** is the idle turn it makes on its own. Sites are a repeating list again, but
-a site that comes round a second time is shown from a different point down its page
-— so a single URL still fills the sphere with different screens. Like the wall, the
-screens aren't clickable: a page would swallow the drag and scroll itself instead.
+**Mobile sphere** spreads screens evenly over a sphere, each one tangent to it and
+facing out, so the near ones are large and the far ones small. Drag to turn it and
+let go to throw it; the wheel zooms. Sites are a repeating list again, but a site
+that comes round a second time is shown from a different point down its page — so a
+single URL still fills the sphere with different screens. Like the wall, the screens
+aren't clickable: a page would swallow the drag and scroll itself instead.
+
+**Screens** switches the whole sphere between phone screens at 393 × 852 and desktop
+ones at 1280 × 800, which is what decides whether sites render their mobile or their
+desktop breakpoint. **Device body** wraps each screen in a phone or a bezel; with it
+off a screen is a flat rounded rectangle with no thickness at all — just the page.
+
+On the **Sphere** tab, **Screens** sets how many there are and sizes them with it
+(they're scaled to the spacing that count works out at), **Spin** is the idle turn it
+makes on its own, and **Zoom** / **Left–right** / **Up–down** frame it: the offsets
+are half-viewports either side of centre, so ±1 parks the middle of the sphere on the
+edge of frame. The wheel drives the same zoom and lands back on the slider when it
+stops.
 
 About half the screens face away at any time, and a DOM overlay has no back face —
-turned past edge-on it would render its page mirrored. Each one fades out just
-before it gets there, leaving the dark glass to come round the far side.
+turned past edge-on it would render its page mirrored. **Screens on both sides**
+turns the page round behind the glass as that happens, so the far half of the sphere
+reads as well as the near one and it still costs one iframe per screen. Off, each
+page fades out just before edge-on and the dark glass comes round instead.
 
 **Scroll the pages** pans every page down its own length and eases back up, all at
 one speed — on the sphere each screen starts at its own point in that pass. A
@@ -80,9 +92,14 @@ gets a clean frame:
 | `rot`         | mobile-grid | `rot=-35` degrees (−90–90)                 |
 | `speed`       | mobile-grid | `speed=0` screens per second (0–4)         |
 | `frame`       | mobile-grid | `frame=0` drops the phone bodies           |
+| `device`      | mobile-sphere | `device=desktop` for 1280 × 800 screens  |
+| `body`        | mobile-sphere | `body=1` adds the phone / bezel          |
 | `count`       | mobile-sphere | `count=30` screens (3–36)                |
 | `size`        | mobile-sphere | `size=1.2` of the even spacing (0.5–1.5) |
+| `both`        | mobile-sphere | `both=1` puts a page on both sides       |
 | `spin`        | mobile-sphere | `spin=0` degrees per second (0–60)       |
+| `zoom`        | mobile-sphere | `zoom=1.4` of the fitted size (0.6–1.8)  |
+| `x`, `y`      | mobile-sphere | `x=-0.45&y=0.25` half-viewports (−1–1)   |
 
 On the wall and the sphere, `url` is shorthand for a one-site `urls` — which on the
 sphere is the interesting case, since every screen then shows that one site from its
