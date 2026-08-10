@@ -23,6 +23,7 @@ const SHOTS = [
   { id: 'iphone', query: 'scene=iphone&on=1' },
   // Still frame: the wall would otherwise be mid-travel and half-blurred by motion.
   { id: 'mobile-grid', query: 'scene=mobile-grid&speed=0' },
+  { id: 'mobile-sphere', query: 'scene=mobile-sphere&spin=0' },
 ]
 
 const server = spawn('npx', ['vite', '--port', String(PORT), '--strictPort'], {

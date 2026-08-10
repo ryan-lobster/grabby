@@ -22,6 +22,13 @@ interface ScreenSurfaceProps {
   rotationZ?: number
   /** Transparent lets the display mesh behind the overlay show through. */
   background?: string
+  /**
+   * Range the screen's own stacking order is mapped into, near plane to far. drei
+   * spreads it linearly across the camera's near/far, so a scene whose screens overlap
+   * needs both a wide range here and a camera that doesn't span more than it has to.
+   * The canvas is its own stacking context (see Stage), so any range paints under the UI.
+   */
+  zIndexRange?: [number, number]
   children: ReactNode
 }
 
@@ -34,6 +41,7 @@ export function ScreenSurface({
   radiusPx = 0,
   rotationZ = 0,
   background = '#000',
+  zIndexRange = [8, 0],
   children,
 }: ScreenSurfaceProps) {
   // drei's <Html transform> maps CSS pixels to three.js units as
@@ -48,9 +56,9 @@ export function ScreenSurface({
         occlude={occlude as never}
         distanceFactor={distanceFactor}
         pointerEvents={interactive ? 'auto' : 'none'}
-        // drei defaults this to ~16.7M, which would paint the screen over the
-        // settings modal. Keep the overlay above the canvas but below the UI.
-        zIndexRange={[8, 0]}
+        // drei defaults this to ~16.7M; the canvas keeps the whole range to itself, so
+        // the numbers only ever sort the screens against each other.
+        zIndexRange={zIndexRange}
         style={{
           width: pxWidth,
           height: pxHeight,

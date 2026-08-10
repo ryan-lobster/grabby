@@ -1,10 +1,11 @@
 import { macbookScene } from './macbook'
 import { iphoneScene } from './iphone'
 import { mobileGridScene } from './mobile-grid'
+import { mobileSphereScene } from './mobile-sphere'
 import type { SceneConfig, SceneId, SceneSettings } from './types'
 
 /** Order here is the order of the tiles in the scene picker. */
-export const SCENES: SceneConfig[] = [macbookScene, iphoneScene, mobileGridScene]
+export const SCENES: SceneConfig[] = [macbookScene, iphoneScene, mobileGridScene, mobileSphereScene]
 
 export const DEFAULT_SCENE_ID: SceneId = 'macbook'
 

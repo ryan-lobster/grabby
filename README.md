@@ -16,6 +16,7 @@ one contributes its own tabs to the settings modal.
 | **MacBook Pro**  | 1280 × 537  | Page URL, lid open/closed, backdrop          |
 | **iPhone 15 Pro**| 393 × 852   | Page URL, orientation, display on/off, titanium finish, backdrop |
 | **Mobile wall**  | 393 × 852   | List of sites, columns, rows, gap, rotation, speed, phone body on/off, page scroll, backdrop |
+| **Mobile sphere**| 393 × 852 / 1280 × 800 | Phone or desktop screens, list of sites, device body on/off, screen count, screen size, screens on both sides, spin, zoom, offsets, page scroll, backdrop |
 
 Because the phone lays its iframe out at a real 393 × 852, responsive sites render
 their actual mobile breakpoint rather than a scaled-down desktop one.
@@ -28,10 +29,24 @@ speed of 0 leaves a wall that only moves when you do. The screens are deliberate
 not clickable there: the embedded pages would otherwise swallow the wheel. Every
 tile is a live iframe, so a 6 × 6 wall is 36 pages loading at once.
 
+**Mobile sphere** spreads bare screens — no phone body — evenly over a sphere, each
+one tangent to it and facing out, so the near ones are large and the far ones small.
+Drag to turn it and let go to throw it; the wheel zooms. **Screens** sizes the
+screens too, since they're scaled to the spacing that count works out at, and
+**Spin** is the idle turn it makes on its own. Sites are a repeating list again, but
+a site that comes round a second time is shown from a different point down its page
+— so a single URL still fills the sphere with different screens. Like the wall, the
+screens aren't clickable: a page would swallow the drag and scroll itself instead.
+
+About half the screens face away at any time, and a DOM overlay has no back face —
+turned past edge-on it would render its page mirrored. Each one fades out just
+before it gets there, leaving the dark glass to come round the far side.
+
 **Scroll the pages** pans every page down its own length and eases back up, all at
-one speed. A cross-origin page can't be scrolled from outside it, so the iframe is
-laid out 2.4 screens tall and slid up behind the screen instead — which means a page
-shorter than that pans into its own empty space at the bottom of the pass.
+one speed — on the sphere each screen starts at its own point in that pass. A
+cross-origin page can't be scrolled from outside it, so the iframe is laid out 2.4
+screens tall and slid up behind the screen instead — which means a page shorter than
+that pans into its own empty space at the bottom of the pass.
 
 Sites that send `X-Frame-Options` / a restrictive `Content-Security-Policy` (most
 big platforms) can't be embedded — a browser limitation, not something this app can
@@ -49,7 +64,7 @@ gets a clean frame:
 
 | Param         | Applies to  | Example                                    |
 | ------------- | ----------- | ------------------------------------------ |
-| `scene`       | —           | `macbook` (default), `iphone`, `mobile-grid` |
+| `scene`       | —           | `macbook` (default), `iphone`, `mobile-grid`, `mobile-sphere` |
 | `url`         | all         | `url=lobster.digital`                      |
 | `bg`          | all         | `bg=%23e8e4f7`                             |
 | `hideUi`      | —           | `hideUi=1` hides the cog                   |
@@ -57,16 +72,21 @@ gets a clean frame:
 | `on`          | iphone      | `on=0` powers the display off              |
 | `orientation` | iphone      | `orientation=landscape`                    |
 | `body`        | iphone      | `body=%235b6a80` titanium hex              |
-| `urls`        | mobile-grid | `urls=lobster.digital,wikipedia.org`       |
+| `urls`        | both mobile | `urls=lobster.digital,wikipedia.org`       |
+| `scroll`      | both mobile | `scroll=1` pans the pages                  |
 | `cols`        | mobile-grid | `cols=5` (1–6)                             |
 | `rows`        | mobile-grid | `rows=4` (1–6)                             |
 | `gap`         | mobile-grid | `gap=0.25` phone widths (0–0.5)            |
 | `rot`         | mobile-grid | `rot=-35` degrees (−90–90)                 |
 | `speed`       | mobile-grid | `speed=0` screens per second (0–4)         |
 | `frame`       | mobile-grid | `frame=0` drops the phone bodies           |
-| `scroll`      | mobile-grid | `scroll=1` pans the pages                  |
+| `count`       | mobile-sphere | `count=30` screens (3–36)                |
+| `size`        | mobile-sphere | `size=1.2` of the even spacing (0.5–1.5) |
+| `spin`        | mobile-sphere | `spin=0` degrees per second (0–60)       |
 
-On the wall, `url` is shorthand for a one-site `urls`.
+On the wall and the sphere, `url` is shorthand for a one-site `urls` — which on the
+sphere is the interesting case, since every screen then shows that one site from its
+own scroll position.
 
 ## Adding a scene
 
